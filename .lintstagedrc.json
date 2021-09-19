@@ -1,0 +1,4 @@
+{
+  "*.ts": ["yarn --silent prettier", "yarn --silent eslint"],
+  "*.{md,mdx,json}}": ["yarn --silent prettier"]
+}
