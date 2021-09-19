@@ -1,4 +1,10 @@
-// eslint-disable-next-line no-console
-const hello = () => console.log('hello world')
+import { NestFactory } from '@nestjs/core'
 
-export { hello }
+import { AppModule } from './app.module'
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule)
+  await app.listen(3000)
+}
+
+bootstrap()

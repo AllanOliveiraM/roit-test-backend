@@ -34,6 +34,7 @@ module.exports = {
     'comma-dangle': 'off',
     'global-require': 'off',
     'operator-linebreak': 'off',
+    'no-useless-constructor': 'off',
     'no-use-before-define': ['error'],
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'prefer-const': ['error'],
