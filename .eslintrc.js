@@ -35,6 +35,7 @@ module.exports = {
     'global-require': 'off',
     'operator-linebreak': 'off',
     'no-useless-constructor': 'off',
+    'no-return-await': 'off',
     'no-use-before-define': ['error'],
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'prefer-const': ['error'],
@@ -58,7 +59,7 @@ module.exports = {
       'error',
       {
         newlinesBetween: 'always',
-        groups: ['module', '/^models/', ['parent', 'sibling', 'index']],
+        groups: ['module', '/^./app/', ['parent', 'sibling', 'index']],
         alphabetize: { order: 'asc', ignoreCase: true },
       },
     ],

@@ -5,7 +5,7 @@ type UserAdress = {
   neighborhood: string
   street: string
   number: string
-  complement?: string
+  complement: string
 }
 
 export { UserAdress }

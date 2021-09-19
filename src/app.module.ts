@@ -1,9 +1,26 @@
 import { Module } from '@nestjs/common'
+import { MongooseModule } from '@nestjs/mongoose'
 
+import {
+  USE_CONNECTION_STRING,
+  CONNECTION_STRING,
+  DB_USER,
+  DB_PASS,
+  DB_HOST,
+  DB_PORT,
+  DB_NAME,
+} from './environment/env'
 import { UsersModule } from './users/users.module'
 
 @Module({
-  imports: [UsersModule],
+  imports: [
+    MongooseModule.forRoot(
+      USE_CONNECTION_STRING === 'true' && CONNECTION_STRING !== 'undefined'
+        ? String(CONNECTION_STRING)
+        : `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`
+    ),
+    UsersModule,
+  ],
   controllers: [],
   providers: [],
 })
