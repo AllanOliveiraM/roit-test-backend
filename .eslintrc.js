@@ -59,7 +59,7 @@ module.exports = {
       'error',
       {
         newlinesBetween: 'always',
-        groups: ['module', '/^./app/', ['parent', 'sibling', 'index']],
+        groups: ['module', '/./app/', ['parent', 'sibling', 'index'], '/./types/'],
         alphabetize: { order: 'asc', ignoreCase: true },
       },
     ],
