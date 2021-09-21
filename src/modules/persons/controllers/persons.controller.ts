@@ -61,7 +61,7 @@ export class PersonsController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: Id) {
-    this.personService.delete(id).catch(error => {
+    return this.personService.delete(id).catch(error => {
       throw new BadRequestException(error)
     })
   }
