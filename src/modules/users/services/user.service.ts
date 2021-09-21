@@ -9,25 +9,9 @@ import { UpdateUserDto } from '../dto/update-user.dto'
 import { UserDto } from '../dto/user.dto'
 import { MODEL_NAME } from '../schemas/user.schema'
 
-import type { Id } from '../../../types/models'
+import { userFactory, fullUserFactory } from '../../../utils/factories'
 
-type UserDtoFactory = UserDto | UpdateUserDto | CreateUserDto | (UserDto & Document)
-
-const userFactory = (user: UserDtoFactory, passwordOrHash?: string) => ({
-  name: user.name,
-  email: user.email,
-  ...(passwordOrHash && { password: passwordOrHash }),
-})
-
-const userIdFactory = (user: UserDto & Document) => ({
-  // eslint-disable-next-line no-underscore-dangle
-  _id: user._id,
-})
-
-const fullUserFactory = (user: UserDto & Document) => ({
-  ...userFactory(user),
-  ...userIdFactory(user),
-})
+import type { Id, Email } from '../../../types/models'
 
 @Injectable()
 export class UserService {
@@ -47,6 +31,10 @@ export class UserService {
     return fullUserFactory(user)
   }
 
+  async getByEmail(email: Email) {
+    return await this.UserModel.findOne({ email }).exec()
+  }
+
   async create(user: CreateUserDto) {
     const salt = await bcrypt.genSalt()
     const passwordHash = await bcrypt.hash(user.password, salt)
@@ -56,41 +44,64 @@ export class UserService {
     return fullUserFactory(createdUser)
   }
 
-  async update(id: Id, user: UpdateUserDto) {
+  async update(id: Id, user: UpdateUserDto, authUser) {
     const oldUser = await this.UserModel.findById(id).exec()
 
-    await this.UserModel.updateOne(
-      { _id: id },
-      userFactory(user, oldUser.password)
-    ).exec()
+    if (authUser?.email !== oldUser?.email) {
+      throw new HttpException('Uou have no authority over this user to edit it.', 400)
+    }
+
+    await this.UserModel.updateOne({ _id: id }, userFactory(user)).exec()
 
     return this.getById(id)
   }
 
   async redefinePassword(data: RedefinePasswordDto) {
-    const user = await this.UserModel.findById(data.id).exec()
-    const isMatch = await bcrypt.compare(data.oldPassword, user.password)
+    const user = await this.getByEmail(data.email)
 
-    if (isMatch) {
-      const salt = await bcrypt.genSalt()
-      const passwordHash = await bcrypt.hash(data.newPasswordOne, salt)
-      const isPasswordTwoMatch = await bcrypt.compare(data.newPasswordTwo, passwordHash)
-
-      if (!isPasswordTwoMatch) {
-        throw new HttpException('Invalid password two.', 400)
-      }
-
-      const hashedSensitiveUserData = userFactory(user, passwordHash)
-
-      await this.UserModel.updateOne({ _id: data.id }, hashedSensitiveUserData).exec()
-
-      return this.getById(data.id)
+    if (!user) {
+      throw new HttpException('Invalid email.', 400)
     }
 
-    throw new HttpException('Invalid password.', 400)
+    const isMatch = await bcrypt.compare(data.oldPassword, user.password)
+
+    if (!isMatch) {
+      throw new HttpException('Invalid password.', 400)
+    }
+
+    const salt = await bcrypt.genSalt()
+    const isOldPasswordMatchToNew = await bcrypt.compare(
+      data.newPasswordOne,
+      user.password
+    )
+
+    if (isOldPasswordMatchToNew) {
+      throw new HttpException('The new password cannot be the same as the old one.', 400)
+    }
+
+    const passwordHash = await bcrypt.hash(data.newPasswordOne, salt)
+    const isPasswordTwoMatch = await bcrypt.compare(data.newPasswordTwo, passwordHash)
+
+    if (!isPasswordTwoMatch) {
+      throw new HttpException('Invalid password two.', 400)
+    }
+
+    const hashedSensitiveUserData = userFactory(user, passwordHash)
+
+    await this.UserModel.updateOne({ _id: user._id }, hashedSensitiveUserData).exec()
+
+    return this.getById(user._id)
   }
 
-  async delete(id: Id) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async delete(id: Id, user: any) {
+    const userById = await this.getById(id)
+    const authUserEmail = user?.email
+
+    if (userById?.email !== authUserEmail) {
+      throw new HttpException('Uou have no authority over this user to delete it.', 400)
+    }
+
     return await this.UserModel.deleteOne({ _id: id }).exec()
   }
 }

@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString, Length } from 'class-validator'
 export class RedefinePasswordDto {
   @IsString()
   @IsNotEmpty()
-  id: string
+  email: string
 
   @IsString()
   @IsNotEmpty()

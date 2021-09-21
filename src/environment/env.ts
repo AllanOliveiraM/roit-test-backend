@@ -4,6 +4,7 @@ const isProd = process.env.NODE_ENV === 'production'
 
 const DEFAULTS: EnvObject = {
   SERVER_PORT: isProd ? '443' : '3001',
+  SECRET_KEY: 'secret_example-IYTD3b6n82dxejfhiruvbgtg',
   USE_CONNECTION_STRING: 'false',
   CONNECTION_STRING: 'undefined',
   DB_HOST: 'localhost',
@@ -21,6 +22,7 @@ const getEnvOrDefault = (env: EnvVar) => {
 
 export const NODE_ENV = isProd
 export const SERVER_PORT = getEnvOrDefault('SERVER_PORT')
+export const SECRET_KEY = getEnvOrDefault('SECRET_KEY')
 export const USE_CONNECTION_STRING = getEnvOrDefault('USE_CONNECTION_STRING')
 export const CONNECTION_STRING = getEnvOrDefault('CONNECTION_STRING')
 export const DB_HOST = getEnvOrDefault('DB_HOST')

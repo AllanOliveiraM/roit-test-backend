@@ -1,5 +1,6 @@
 export type EnvObject = {
   SERVER_PORT: string
+  SECRET_KEY: string
   USE_CONNECTION_STRING: string
   CONNECTION_STRING: string
   DB_HOST: string

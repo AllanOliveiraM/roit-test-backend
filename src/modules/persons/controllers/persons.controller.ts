@@ -9,8 +9,10 @@ import {
   Put,
   UsePipes,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common'
 
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard'
 import { CreatePersonDto } from '../dto/create-person.dto'
 import { PersonDto } from '../dto/person.dto'
 import { UpdatePersonDto } from '../dto/update-person.dto'
@@ -22,6 +24,7 @@ import type { Id } from '../../../types/models'
 export class PersonsController {
   constructor(private personService: PersonService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getAll(): Promise<CreatePersonDto[]> {
     return this.personService.getAll().catch(error => {
@@ -29,6 +32,7 @@ export class PersonsController {
     })
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getById(@Param('id') id: Id): Promise<PersonDto> {
     return this.personService.getById(id).catch(error => {
@@ -36,6 +40,7 @@ export class PersonsController {
     })
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   @UsePipes(ValidationPipe)
   async create(@Body() user: CreatePersonDto): Promise<PersonDto> {
@@ -44,6 +49,7 @@ export class PersonsController {
     })
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   @UsePipes(ValidationPipe)
   async update(@Param('id') id: Id, @Body() user: UpdatePersonDto): Promise<PersonDto> {
@@ -52,6 +58,7 @@ export class PersonsController {
     })
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: Id) {
     this.personService.delete(id).catch(error => {

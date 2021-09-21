@@ -9,8 +9,12 @@ import {
   Put,
   UsePipes,
   ValidationPipe,
+  UseGuards,
+  Request,
 } from '@nestjs/common'
+import { Request as RequestExpress } from 'express'
 
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard'
 import { CreateUserDto } from '../dto/create-user.dto'
 import { RedefinePasswordDto } from '../dto/redefine-password.dto'
 import { UpdateUserDto } from '../dto/update-user.dto'
@@ -23,6 +27,7 @@ import type { Id } from '../../../types/models'
 export class UsersController {
   constructor(private userService: UserService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getAll(): Promise<UserDto[]> {
     return this.userService.getAll().catch(error => {
@@ -30,6 +35,7 @@ export class UsersController {
     })
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getById(@Param('id') id: Id): Promise<UserDto> {
     return this.userService.getById(id).catch(error => {
@@ -45,10 +51,15 @@ export class UsersController {
     })
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   @UsePipes(ValidationPipe)
-  async update(@Param('id') id: Id, @Body() user: UpdateUserDto): Promise<UserDto> {
-    return this.userService.update(id, user).catch(error => {
+  async update(
+    @Param('id') id: Id,
+    @Body() user: UpdateUserDto,
+    @Request() req: RequestExpress
+  ): Promise<UserDto> {
+    return this.userService.update(id, user, req.user).catch(error => {
       throw new BadRequestException(error)
     })
   }
@@ -61,9 +72,10 @@ export class UsersController {
     })
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async delete(@Param('id') id: Id) {
-    this.userService.delete(id).catch(error => {
+  async delete(@Param('id') id: Id, @Request() req: RequestExpress) {
+    return this.userService.delete(id, req.user).catch(error => {
       throw new BadRequestException(error)
     })
   }

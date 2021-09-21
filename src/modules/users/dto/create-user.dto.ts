@@ -1,5 +1,7 @@
 import { IsNotEmpty, IsString, IsEmail, Length } from 'class-validator'
 
+import type { Email, Password } from '../../../types/models'
+
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
@@ -7,10 +9,10 @@ export class CreateUserDto {
 
   @IsEmail()
   @IsNotEmpty()
-  email: string
+  email: Email
 
   @IsString()
   @IsNotEmpty()
   @Length(8, 255)
-  password: string
+  password: Password
 }

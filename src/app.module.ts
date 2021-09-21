@@ -10,6 +10,7 @@ import {
   DB_PORT,
   DB_NAME,
 } from './environment/env'
+import { AuthModule } from './modules/auth/auth.module'
 import { PersonsModule } from './modules/persons/persons.module'
 import { UsersModule } from './modules/users/users.module'
 
@@ -20,6 +21,7 @@ import { UsersModule } from './modules/users/users.module'
         ? String(CONNECTION_STRING)
         : `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`
     ),
+    AuthModule,
     PersonsModule,
     UsersModule,
   ],
