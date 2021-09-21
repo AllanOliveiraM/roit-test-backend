@@ -217,7 +217,7 @@ Run eslint and fix possible problems.
 yarn eslint:check
 ```
 
-Only check the code with eslint, reposring all errors.
+Only check the code with eslint, reporting all errors.
 
 ### License
 
