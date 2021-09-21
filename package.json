@@ -13,7 +13,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "reinstall": "yarn concurrently \"rm -rf ./node_modules\" \"rm -rf ./yarn.lock ./package-lock.json\" && yarn",
+    "reinstall": "yarn concurrently \"rm -rf ./node_modules\" \"rm -rf ./yarn.lock ./package-lock.json ./dist ./build\" && yarn",
     "commit": "npx git-cz",
     "type-check": "tsc --project tsconfig.json --pretty --noEmit",
     "prettier": "prettier --loglevel warn --write .",
