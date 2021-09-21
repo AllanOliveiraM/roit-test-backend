@@ -13,7 +13,7 @@ Hello people! This is my API project using Nestjs. It's my first time using Nest
 
 ### Main Used tecnologies
 
-- Nestjs with noode and Express;
+- Nestjs with node and Express;
 - MongoDB;
 - Docker.
 
