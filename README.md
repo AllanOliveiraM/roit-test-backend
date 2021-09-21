@@ -82,7 +82,7 @@ DB_PASS=password
 
 NODE_ENV: Defines if you running in `development` or `production` mode.<br />
 SERVER_PORT: The TCP-IP port to connect to server with HTTP protocol.<br />
-SECRET_KEY: Your secret key string. If you don't know what to put here in DEV environment, spank your keyboard ^^<br />
+SECRET_KEY: Your secret key string. If you don't know what to put here in DEV environment, spank your keyboard 😄<br />
 USE_CONNECTION_STRING: If you prefer to use the complete MongoDB connection string, set this variable to `'true'`.<br />
 CONNECTION_STRING: If you checked to use the complete MongoDB connection string, pass it here.
 
