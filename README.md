@@ -80,18 +80,19 @@ DB_PASS=password
 
 #### Explanation of variables
 
-NODE_ENV: Defines if you running in `development` or `production` mode.
-SERVER_PORT: The TCP-IP port to connect to server with HTTP protocol.
-SECRET_KEY: Your secret key string. If you don't know what to put here in DEV environment, spank your keyboard ^^
-USE_CONNECTION_STRING: If you prefer to use the complete MongoDB connection string, set this variable to `'true'`.
+NODE_ENV: Defines if you running in `development` or `production` mode.<br />
+SERVER_PORT: The TCP-IP port to connect to server with HTTP protocol.<br />
+SECRET_KEY: Your secret key string. If you don't know what to put here in DEV environment, spank your keyboard ^^<br />
+USE_CONNECTION_STRING: If you prefer to use the complete MongoDB connection string, set this variable to `'true'`.<br />
 CONNECTION_STRING: If you checked to use the complete MongoDB connection string, pass it here.
 
 Below are the database variables. They only need to be filled in if you don't use the full connection string.
 If you have not checked to use the complete MongoDB connection string, pass the database connection information here:
-DB_HOST=localhost
-DB_PORT=27020
-DB_NAME=roit
-DB_USER=roit
+
+DB_HOST=localhost<br />
+DB_PORT=27020<br />
+DB_NAME=roit<br />
+DB_USER=roit<br />
 DB_PASS=password
 
 3 - Start database with `docker-compose` with the following command:
