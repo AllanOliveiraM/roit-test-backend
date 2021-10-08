@@ -52,6 +52,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  // TODO: ver methods
   @Put(':id')
   @UsePipes(ValidationPipe)
   async update(

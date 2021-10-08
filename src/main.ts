@@ -1,9 +1,11 @@
-import './environment/setup'
-
 import { NestFactory } from '@nestjs/core'
 import * as helmet from 'helmet'
 
 import { AppModule } from './app.module'
+
+import { initEnvironmentVariables } from './environment/setup'
+
+initEnvironmentVariables()
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)

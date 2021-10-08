@@ -1,4 +1,4 @@
-import type { EnvObject, EnvVar } from './types'
+import type { EnvObject, EnvVar } from '../types/environment'
 
 const isProd = process.env.NODE_ENV === 'production'
 
